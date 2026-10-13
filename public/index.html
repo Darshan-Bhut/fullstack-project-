@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practice task manager built with Express and SQLite">
+  <title>TaskFlow — Practice Planner</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">FULL-STACK PRACTICE PROJECT</p>
+        <h1>Make progress <span>visible.</span></h1>
+        <p class="sub">A small task board to practice CRUD, APIs, databases, and deployment.</p>
+      </div>
+      <div class="hero-mark" aria-hidden="true">✓</div>
+    </header>
+
+    <section class="stats" aria-label="Task statistics">
+      <article class="stat"><span>Total tasks</span><strong id="total-count">0</strong></article>
+      <article class="stat"><span>In progress</span><strong id="open-count">0</strong></article>
+      <article class="stat"><span>Completed</span><strong id="done-count">0</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">YOUR WORKSPACE</p><h2>Add a task</h2></div>
+        <span class="live"><i></i> API-backed</span>
+      </div>
+      <form id="task-form">
+        <label for="task-title">Task title</label>
+        <input id="task-title" name="title" maxlength="120" placeholder="e.g. Build my first Docker image" required>
+        <label for="task-description">Description <span>(optional)</span></label>
+        <textarea id="task-description" name="description" maxlength="1000" rows="3" placeholder="What do you want to practice?"></textarea>
+        <button type="submit">＋ Add task</button>
+        <p id="form-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="task-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">STAY ON TRACK</p><h2>Your tasks</h2></div>
+        <select id="filter" aria-label="Filter tasks">
+          <option value="all">All tasks</option><option value="open">In progress</option><option value="done">Completed</option>
+        </select>
+      </div>
+      <div id="task-list" class="task-list"><p class="empty">Loading tasks…</p></div>
+    </section>
+    <footer>TaskFlow · Built for learning, one commit at a time.</footer>
+  </main>
+</body>
+</html>

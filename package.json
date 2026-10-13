@@ -1,0 +1,20 @@
+{
+  "name": "taskflow-fullstack-practice",
+  "version": "1.0.0",
+  "description": "Beginner full-stack CRUD project for DevOps practice",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
+  }
+}
