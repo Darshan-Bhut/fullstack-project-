@@ -1,55 +1,277 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A practice task manager built with Express and SQLite">
-  <title>TaskFlow — Practice Planner</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="TaskFlow is a task management application for practicing full-stack development, APIs, databases, and DevOps."
+  >
+
+  <meta name="theme-color" content="#f7f8fc">
+
+  <title>TaskFlow | Task Management Dashboard</title>
+
+  <!-- Application styles -->
   <link rel="stylesheet" href="/styles.css">
+
+  <!-- Frontend JavaScript -->
   <script src="/app.js" defer></script>
 </head>
+
 <body>
-  <main class="shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">FULL-STACK PRACTICE PROJECT</p>
-        <h1>Make progress <span>visible.</span></h1>
-        <p class="sub">A small task board to practice CRUD, APIs, databases, and deployment.</p>
-      </div>
-      <div class="hero-mark" aria-hidden="true">✓</div>
-    </header>
+  <div class="app-layout">
 
-    <section class="stats" aria-label="Task statistics">
-      <article class="stat"><span>Total tasks</span><strong id="total-count">0</strong></article>
-      <article class="stat"><span>In progress</span><strong id="open-count">0</strong></article>
-      <article class="stat"><span>Completed</span><strong id="done-count">0</strong></article>
-    </section>
+    <!-- =========================================
+         SIDEBAR NAVIGATION
+    ========================================== -->
+    <aside class="sidebar" aria-label="Main navigation">
 
-    <section class="panel">
-      <div class="section-heading">
-        <div><p class="eyebrow">YOUR WORKSPACE</p><h2>Add a task</h2></div>
-        <span class="live"><i></i> API-backed</span>
-      </div>
-      <form id="task-form">
-        <label for="task-title">Task title</label>
-        <input id="task-title" name="title" maxlength="120" placeholder="e.g. Build my first Docker image" required>
-        <label for="task-description">Description <span>(optional)</span></label>
-        <textarea id="task-description" name="description" maxlength="1000" rows="3" placeholder="What do you want to practice?"></textarea>
-        <button type="submit">＋ Add task</button>
-        <p id="form-message" role="status" aria-live="polite"></p>
-      </form>
-    </section>
+      <a href="/" class="brand" aria-label="TaskFlow home">
+        <span class="brand-icon" aria-hidden="true">✓</span>
+        <span>TaskFlow</span>
+      </a>
 
-    <section class="task-section">
-      <div class="section-heading">
-        <div><p class="eyebrow">STAY ON TRACK</p><h2>Your tasks</h2></div>
-        <select id="filter" aria-label="Filter tasks">
-          <option value="all">All tasks</option><option value="open">In progress</option><option value="done">Completed</option>
-        </select>
+      <nav class="sidebar-nav">
+        <p class="nav-heading">WORKSPACE</p>
+
+        <a href="#dashboard" class="nav-link active"
+           aria-current="page">
+          <span aria-hidden="true">▦</span>
+          Dashboard
+        </a>
+
+        <a href="#task-section" class="nav-link">
+          <span aria-hidden="true">☷</span>
+          My Tasks
+        </a>
+
+        <a href="#task-section" class="nav-link">
+          <span aria-hidden="true">✓</span>
+          Completed
+        </a>
+
+        <p class="nav-heading">PREFERENCES</p>
+
+        <a href="#settings" class="nav-link">
+          <span aria-hidden="true">⚙</span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="profile-avatar" aria-hidden="true">TF</div>
+
+        <div class="profile-info">
+          <strong>My Workspace</strong>
+          <span>Personal planner</span>
+        </div>
       </div>
-      <div id="task-list" class="task-list"><p class="empty">Loading tasks…</p></div>
-    </section>
-    <footer>TaskFlow · Built for learning, one commit at a time.</footer>
-  </main>
+    </aside>
+
+
+    <!-- =========================================
+         MAIN APPLICATION
+    ========================================== -->
+    <main class="main-content" id="dashboard">
+
+      <!-- PAGE HEADER -->
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">WORKSPACE / OVERVIEW</p>
+          <h1>Good to see you!</h1>
+          <p class="page-description">
+            Organize your work and make progress every day.
+          </p>
+        </div>
+
+        <a href="#task-form" class="header-action">
+          + Create task
+        </a>
+      </header>
+
+
+      <!-- =======================================
+           TASK STATISTICS
+      ======================================== -->
+      <section class="stats-grid" aria-label="Task statistics">
+
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Total tasks</span>
+            <span class="stat-icon total-icon"
+                  aria-hidden="true">▤</span>
+          </div>
+
+          <strong id="total-count" class="stat-number">0</strong>
+          <p>All tasks in your workspace</p>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>In progress</span>
+            <span class="stat-icon progress-icon"
+                  aria-hidden="true">◷</span>
+          </div>
+
+          <strong id="open-count" class="stat-number">0</strong>
+          <p>Tasks still to complete</p>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Completed</span>
+            <span class="stat-icon completed-icon"
+                  aria-hidden="true">✓</span>
+          </div>
+
+          <strong id="done-count" class="stat-number">0</strong>
+          <p>Tasks successfully finished</p>
+        </article>
+
+      </section>
+
+
+      <!-- =======================================
+           CREATE TASK
+      ======================================== -->
+      <section class="panel create-panel" id="create-task">
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">GET STARTED</p>
+            <h2>Create a new task</h2>
+            <p class="section-description">
+              Add a task to keep your next goal organized.
+            </p>
+          </div>
+
+          <span class="api-status">
+            <span class="status-dot"
+                  aria-hidden="true"></span>
+            API connected
+          </span>
+        </div>
+
+        <form id="task-form">
+
+          <div class="form-group">
+            <label for="task-title">Task title</label>
+
+            <input
+              type="text"
+              id="task-title"
+              name="title"
+              maxlength="120"
+              placeholder="e.g. Build my first Docker image"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="task-description">
+              Description
+              <span class="optional">(optional)</span>
+            </label>
+
+            <textarea
+              id="task-description"
+              name="description"
+              maxlength="1000"
+              rows="3"
+              placeholder="Describe what you want to accomplish..."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button">
+              + Add task
+            </button>
+
+            <p
+              id="form-message"
+              class="form-message"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+        </form>
+      </section>
+
+
+      <!-- =======================================
+           TASK MANAGEMENT
+      ======================================== -->
+      <section class="task-section" id="task-section">
+
+        <div class="section-heading task-heading">
+          <div>
+            <p class="eyebrow">YOUR WORKSPACE</p>
+            <h2>My tasks</h2>
+            <p class="section-description">
+              View, manage, and complete your tasks.
+            </p>
+          </div>
+        </div>
+
+        <!-- SEARCH AND FILTER -->
+        <div class="task-toolbar">
+
+          <div class="search-box">
+            <label for="task-search" class="visually-hidden">
+              Search tasks
+            </label>
+
+            <span aria-hidden="true">⌕</span>
+
+            <input
+              type="search"
+              id="task-search"
+              placeholder="Search your tasks..."
+            />
+          </div>
+
+          <div class="filter-box">
+            <label for="filter">Status:</label>
+
+            <select id="filter">
+              <option value="all">All tasks</option>
+              <option value="open">In progress</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- JAVASCRIPT RENDERS TASK ITEMS HERE -->
+        <div id="task-list" class="task-list"
+             aria-live="polite"
+             aria-busy="true">
+
+          <p class="empty">Loading tasks...</p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =======================================
+           FOOTER
+      ======================================== -->
+      <footer class="app-footer">
+        <p>
+          TaskFlow <span aria-hidden="true">·</span>
+          Built for learning, one commit at a time.
+        </p>
+
+        <p>Full-stack practice project</p>
+      </footer>
+
+    </main>
+  </div>
 </body>
 </html>
